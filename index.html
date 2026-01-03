@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="es">
+<html lang="ca">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Elige nuestro viaje</title>
-  <meta name="description" content="Elige entre Budapest y Cracovia" />
+  <title>Tria el nostre viatge</title>
+  <meta name="description" content="Tria entre Budapest i Cracòvia" />
   <style>
     :root{
       --bg1:#0b1220;
@@ -14,6 +14,8 @@
       --text: rgba(255,255,255,.92);
       --muted: rgba(255,255,255,.68);
       --ring: rgba(255,255,255,.25);
+      --ok: rgba(43, 122, 120, .55);
+      --okBorder: rgba(43, 122, 120, .8);
     }
     *{box-sizing:border-box}
     body{
@@ -28,6 +30,7 @@
       align-items:center;
       justify-content:center;
       padding:24px;
+      overflow-x:hidden;
     }
     .wrap{ width:min(980px, 100%); }
     .top{ text-align:center; margin-bottom:18px; }
@@ -109,7 +112,7 @@
       flex-wrap:wrap;
       align-items:center;
     }
-    button, a.btn{
+    button{
       appearance:none;
       border:0;
       cursor:pointer;
@@ -120,13 +123,12 @@
       color:rgba(255,255,255,.95);
       background: rgba(255,255,255,.14);
       border: 1px solid rgba(255,255,255,.22);
-      text-decoration:none;
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
       display:inline-flex;
       align-items:center;
       gap:10px;
-      transition: transform .08s ease, background .12s ease, border-color .12s ease;
     }
-    button:hover, a.btn:hover{
+    button:hover{
       transform: translateY(-1px);
       background: rgba(255,255,255,.18);
       border-color: rgba(255,255,255,.34);
@@ -139,6 +141,11 @@
       background: rgba(43, 122, 120, .55);
       border-color: rgba(43, 122, 120, .8);
     }
+    .ghost{
+      background: rgba(255,255,255,.08);
+      border-color: rgba(255,255,255,.2);
+      color: rgba(255,255,255,.85);
+    }
     .note{
       margin-top:16px;
       padding:14px 16px;
@@ -149,20 +156,51 @@
       display:none;
     }
     .note strong{ color:rgba(255,255,255,.92); }
+    .noteRow{
+      margin-top:10px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
     .footer{
       margin-top:14px;
       text-align:center;
       color:rgba(255,255,255,.55);
       font-size:13px;
     }
+
+    /* Confeti (subtil) */
+    .confetti{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      overflow:hidden;
+      display:none;
+    }
+    .confetti i{
+      position:absolute;
+      top:-10px;
+      width:10px;
+      height:18px;
+      border-radius:3px;
+      opacity:.85;
+      filter: blur(.1px);
+      animation: fall 900ms ease-in forwards;
+      transform: translateY(0) rotate(0deg);
+      background: rgba(255,255,255,.65);
+    }
+    @keyframes fall{
+      to { transform: translateY(110vh) rotate(260deg); opacity: 0; }
+    }
   </style>
 </head>
 <body>
   <div class="wrap">
     <div class="top">
-      <div class="badge">✨ Mini plan secreto · 3-4 días · solo ciudad</div>
-      <h1>Elige nuestro viaje</h1>
-      <p>Sin presión. Solo elige el que te apetezca más hoy.</p>
+      <div class="badge">✨ Mini pla secret · 3–4 dies · només ciutat</div>
+      <h1>Tria el nostre viatge</h1>
+      <p>Sense pressió. Tria el que et vingui més de gust avui.</p>
     </div>
 
     <div class="grid">
@@ -170,74 +208,129 @@
         <div class="city">
           <div>
             <h2>Budapest</h2>
-            <p style="margin-top:6px">Romántica, termas y paseos junto al Danubio.</p>
+            <p style="margin-top:6px">Romàntica, termes i passejos vora el Danubi.</p>
           </div>
-          <span class="tag">Variedad + wow</span>
+          <span class="tag">Varietat + wow</span>
         </div>
         <ul>
-          <li>Termas, cafés con encanto, barrio creativo</li>
-          <li>Vistas de Buda al atardecer</li>
-          <li>Ideal si te apetece “algo especial”</li>
+          <li>Termes, cafès amb encant, barri creatiu</li>
+          <li>Vistes de Buda al capvespre</li>
+          <li>Ideal si et ve de gust “alguna cosa especial”</li>
         </ul>
         <div class="btns">
-          <button class="primary" onclick="choose('Budapest')">Me quedo con Budapest</button>
-          <a class="btn" id="wa-budapest" href="#" rel="noopener">Decírselo por WhatsApp</a>
+          <button class="primary" onclick="choose('Budapest')">Em quedo amb Budapest</button>
         </div>
       </section>
 
-      <section class="card" aria-label="Cracovia">
+      <section class="card" aria-label="Cracòvia">
         <div class="city">
           <div>
-            <h2>Cracovia</h2>
-            <p style="margin-top:6px">Calma total, tiendecitas, Kazimierz y cafés.</p>
+            <h2>Cracòvia</h2>
+            <p style="margin-top:6px">Calma total, botiguetes, Kazimierz i cafès.</p>
           </div>
-          <span class="tag">Más barata</span>
+          <span class="tag">Més econòmica</span>
         </div>
         <ul>
-          <li>Muy walkable, muy local y sin prisas</li>
-          <li>Kazimierz para artesanos, vinilos y cafés</li>
-          <li>Perfecta si buscas desconexión y budget</li>
+          <li>Molt walkable, molt local i sense presses</li>
+          <li>Kazimierz per artesans, vinils i cafès</li>
+          <li>Perfecta si busques desconnexió i budget</li>
         </ul>
         <div class="btns">
-          <button class="primary" onclick="choose('Cracovia')">Me quedo con Cracovia</button>
-          <a class="btn" id="wa-cracovia" href="#" rel="noopener">Decírselo por WhatsApp</a>
+          <button class="primary" onclick="choose('Cracòvia')">Em quedo amb Cracòvia</button>
         </div>
       </section>
     </div>
 
     <div id="note" class="note"></div>
-    <div class="footer">Pista: si lo abres en el móvil, queda especialmente bien 😄</div>
+    <div class="footer">Pista: si ho obres al mòbil, queda especialment bé 😄</div>
   </div>
 
+  <div id="confetti" class="confetti" aria-hidden="true"></div>
+
   <script>
-    // Pon aquí TU número para recibir el WhatsApp (formato internacional sin +, ej: 34600111222)
-    const YOUR_WHATSAPP_NUMBER = "34XXXXXXXXX";
-
-    function setWhatsAppLinks() {
-      const base = "https://wa.me/" + YOUR_WHATSAPP_NUMBER + "?text=";
-      document.getElementById("wa-budapest").href = base + encodeURIComponent("Ha elegido Budapest ✅");
-      document.getElementById("wa-cracovia").href = base + encodeURIComponent("Ha elegido Cracovia ✅");
-
-      // Si no has configurado el número, ocultamos los botones de WhatsApp
-      if (YOUR_WHATSAPP_NUMBER.includes("X")) {
-        document.getElementById("wa-budapest").style.display = "none";
-        document.getElementById("wa-cracovia").style.display = "none";
-      }
-    }
-
     function choose(city) {
       localStorage.setItem("chosenCity", city);
+
       const note = document.getElementById("note");
       note.style.display = "block";
-      note.innerHTML = `Perfecto 💛 <strong>${city}</strong> ha ganado.<br/>Ahora ya puedes cerrar esto y seguir con tu día.`;
-      if (navigator.vibrate) navigator.vibrate([40, 30, 40]);
+      note.innerHTML = `
+        Fet 🤝 Decisió guardada: <strong>${city}</strong>.
+        <div class="noteRow">
+          <button class="ghost" onclick="resetChoice()">Canviar d'opinió</button>
+          <button class="ghost" onclick="share()">Compartir</button>
+        </div>
+      `;
+
+      if (navigator.vibrate) navigator.vibrate([35, 25, 35]);
+      launchConfetti();
       window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
     }
 
-    (function init(){
-      setWhatsAppLinks();
+    function resetChoice() {
+      localStorage.removeItem("chosenCity");
+      const note = document.getElementById("note");
+      note.style.display = "none";
+      note.innerHTML = "";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    async function share() {
+      const url = window.location.href;
       const chosen = localStorage.getItem("chosenCity");
-      if (chosen) choose(chosen);
+      const text = chosen
+        ? `He triat ${chosen}. Ara a complir 😄`
+        : `Tria entre Budapest i Cracòvia 😄`;
+
+      try {
+        if (navigator.share) {
+          await navigator.share({ title: "Tria el nostre viatge", text, url });
+        } else {
+          await navigator.clipboard.writeText(url);
+          alert("Enllaç copiat 👍");
+        }
+      } catch (_) {
+        // Silenci: si cancel·la, no passa res
+      }
+    }
+
+    function launchConfetti() {
+      const c = document.getElementById("confetti");
+      c.innerHTML = "";
+      c.style.display = "block";
+
+      const pieces = 18;
+      for (let i = 0; i < pieces; i++) {
+        const p = document.createElement("i");
+        const left = Math.random() * 100;
+        const delay = Math.random() * 120;
+        const size = 8 + Math.random() * 8;
+
+        p.style.left = left + "vw";
+        p.style.animationDelay = delay + "ms";
+        p.style.width = size + "px";
+        p.style.height = (size * 1.6) + "px";
+        p.style.opacity = (0.6 + Math.random() * 0.35).toFixed(2);
+
+        c.appendChild(p);
+      }
+
+      setTimeout(() => { c.style.display = "none"; }, 1000);
+    }
+
+    (function init(){
+      const chosen = localStorage.getItem("chosenCity");
+      if (chosen) {
+        // Mostra el missatge directament si ja havia triat
+        const note = document.getElementById("note");
+        note.style.display = "block";
+        note.innerHTML = `
+          Ja hi havia una decisió guardada 😄: <strong>${chosen}</strong>.
+          <div class="noteRow">
+            <button class="ghost" onclick="resetChoice()">Canviar d'opinió</button>
+            <button class="ghost" onclick="share()">Compartir</button>
+          </div>
+        `;
+      }
     })();
   </script>
 </body>
